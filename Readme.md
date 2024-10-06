@@ -1,36 +1,58 @@
-Networth Tracker API
-Overview
-The Networth Tracker API is designed to allow users to register, log in, and track their financial details. It uses Hapi.js as the backend framework, Sequelize as the ORM for database management, and JWT for authentication. Swagger is used for API documentation and Redis for caching/rate-limiting.
+<h1>Networth Tracker API</h1>
 
-Features
-User Authentication: Register and log in users.
-JWT Token-based Authentication: Issue and validate JWT tokens.
-Rate Limiting: Limit requests per user to prevent abuse.
-Redis Integration: Cache user sessions and manage rate limiting.
-API Documentation: Swagger is used to document the available endpoints.
-Technologies Used
-Hapi.js: Backend framework for building APIs.
-Sequelize: ORM for managing database connections and queries.
-JWT: JSON Web Token for secure authentication.
-Redis: Used for rate limiting and caching.
-Swagger: Auto-generated API documentation.
-Requirements
-Node.js: >= 14.x.x
-MySQL: For database storage.
-Redis: For caching and rate-limiting.
-npm: Node package manager.
-Installation
-1. Clone the repository
-bash
+<h2>Overview</h2>
+<p>The <strong>Networth Tracker API</strong> is a RESTful service that enables users to register, log in, and track their financial details. It leverages <strong>Hapi.js</strong> as the backend framework, <strong>Sequelize</strong> as the ORM for database management, and <strong>JWT</strong> for authentication. Additional features include API documentation with <strong>Swagger</strong> and caching/rate-limiting with <strong>Redis</strong>.</p>
+
+<hr>
+
+<h2>Features</h2>
+<ul>
+    <li><strong>User Authentication:</strong> Users can register and log in.</li>
+    <li><strong>JWT Token-based Authentication:</strong> Issue and validate JWT tokens securely.</li>
+    <li><strong>Rate Limiting:</strong> Prevent abuse by limiting requests per user.</li>
+    <li><strong>Redis Integration:</strong> Manage session caching and rate limiting.</li>
+    <li><strong>API Documentation:</strong> Auto-generated documentation using Swagger.</li>
+</ul>
+
+<hr>
+
+<h2>Technologies Used</h2>
+<ul>
+    <li><strong>Hapi.js:</strong> Backend framework for building scalable APIs.</li>
+    <li><strong>Sequelize:</strong> ORM for database interactions.</li>
+    <li><strong>JWT (JSON Web Token):</strong> Secure authentication via tokens.</li>
+    <li><strong>Redis:</strong> Caching and rate-limiting tool.</li>
+    <li><strong>Swagger:</strong> Auto-generates API documentation.</li>
+</ul>
+
+<hr>
+
+<h2>Requirements</h2>
+<ul>
+    <li><strong>Node.js</strong> (>= 14.x.x)</li>
+    <li><strong>MySQL:</strong> For persistent storage.</li>
+    <li><strong>Redis:</strong> For caching and rate-limiting.</li>
+    <li><strong>npm:</strong> Node package manager.</li>
+</ul>
+
+<hr>
+
+<h2>Installation</h2>
+
+<h3>1. Clone the Repository</h3>
+<pre><code>
 git clone https://github.com/your-username/networth-tracker.git
 cd networth-tracker
-2. Install Dependencies
-bash
-npm install
-3. Create .env File
-You need to create a .env file in the root directory with the following configuration:
+</code></pre>
 
-.env:
+<h3>2. Install Dependencies</h3>
+<pre><code>
+npm install
+</code></pre>
+
+<h3>3. Create <code>.env</code> File</h3>
+<p>Create a <code>.env</code> file in the project’s root directory with the following configuration:</p>
+<pre><code>
 DB_HOST=localhost
 DB_USER=your_mysql_username
 DB_PASSWORD=your_mysql_password
@@ -39,70 +61,98 @@ JWT_SECRET=your_jwt_secret_key
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 PORT=3000
-4. Configure MySQL
-Ensure that MySQL is installed and running on your machine. Create a new database named networth_tracker:
+</code></pre>
 
-mysql:
+<h3>4. Configure MySQL</h3>
+<p>Ensure MySQL is installed and running. Create the database:</p>
+<pre><code>
 CREATE DATABASE networth_tracker;
-5. Start Redis
-Ensure Redis is running on your machine. You can start Redis with:
+</code></pre>
 
-bash:
+<h3>5. Start Redis</h3>
+<p>Ensure Redis is running. Start Redis with:</p>
+<pre><code>
 redis-server
-6. Start the Server
-Run the following command to start the server:
+</code></pre>
 
-bash:
+<h3>6. Start the Server</h3>
+<p>Start the server using:</p>
+<pre><code>
 npm start
-If everything is set up correctly, you should see:
-
-shell:
+</code></pre>
+<p>If successful, you should see:</p>
+<pre><code>
 Executing (default): SELECT 1+1 AS result
 Connection has been established successfully.
 Server running on http://localhost:3000
-API Documentation
-Swagger API documentation is available at http://localhost:3000/documentation.
+</code></pre>
 
-Example API Routes
-POST /v1/users/register: Register a new user.
-POST /v1/users/login: User login and token generation.
-GET /v1/users/validate-token: Validate the JWT token.
-Redis Integration
-Redis is used to handle caching and rate limiting. The ioredis package is used to connect and manage Redis within the application.
+<hr>
 
-Redis Configuration
-Redis is configured in the application using ioredis. If Redis is not already running on localhost:6379, you can modify this in your .env file or Redis instance in your server.js:
+<h2>API Documentation</h2>
+<p>You can access the Swagger-generated API documentation at:</p>
+<pre><code>http://localhost:3000/documentation</code></pre>
 
-javascript:
+<hr>
+
+<h2>Example API Routes</h2>
+<ul>
+    <li><strong>POST</strong> <code>/v1/users/register</code>: Register a new user.</li>
+    <li><strong>POST</strong> <code>/v1/users/login</code>: User login and token generation.</li>
+    <li><strong>GET</strong> <code>/v1/users/validate-token</code>: Validate JWT token.</li>
+</ul>
+
+<hr>
+
+<h2>Redis Integration</h2>
+<p>Redis is used for caching sessions and managing rate limiting via the <code>ioredis</code> package. Redis configuration is managed in <code>server.js</code>:</p>
+<pre><code>
 const redis = new Redis({
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || 6379,
 });
-Rate Limiting
-The app uses hapi-rate-limitor for rate limiting. By default, each user is allowed to make 5 requests per minute. You can customize these settings in the rate limiter configuration within server.js:
+</code></pre>
 
-javascript:
+<h3>Rate Limiting</h3>
+<p>Using <code>hapi-rate-limitor</code>, the app restricts users to 5 requests per minute by default:</p>
+<pre><code>
 await server.register({
     plugin: rateLimiter,
     options: {
         enabled: true,
         max: 5,
-        duration: 60 * 1000, // Rate limit reset duration
+        duration: 60 * 1000, // 1 minute
         userLimitAttribute: 'rateLimit'
     },
 });
-Security
-JWT is used to secure the API endpoints. After successful login, the client receives a token that is used to authenticate subsequent requests.
+</code></pre>
 
-Token Validation: Token is validated via the /v1/users/validate-token endpoint.
-Environment Variables: Keep your .env file private, especially the JWT secret.
-Troubleshooting
-Common Issues
-MySQL Connection Issues: Make sure MySQL is installed and the database connection details in your .env file are correct.
-Redis Connection Refused: Ensure Redis is installed and running. You can start Redis with redis-server.
-Swagger Docs Not Showing APIs: Ensure routes are correctly registered with proper tags. Routes without tags won’t appear in Swagger.
-Logs
-The server logs useful information to the console. Errors will be displayed with details to help you debug issues.
+<hr>
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+<h2>Security</h2>
+<ul>
+    <li><strong>JWT Authentication:</strong> Secure API endpoints with JWT tokens.</li>
+    <li><strong>Token Validation:</strong> Use <code>/v1/users/validate-token</code> to verify tokens.</li>
+    <li><strong>Environment Variables:</strong> Keep sensitive information (like JWT secrets) in your <code>.env</code> file.</li>
+</ul>
+
+<hr>
+
+<h2>Troubleshooting</h2>
+
+<h3>Common Issues</h3>
+<ul>
+    <li><strong>MySQL Connection Issues:</strong> Double-check MySQL is installed and your <code>.env</code> credentials are correct.</li>
+    <li><strong>Redis Connection Refused:</strong> Ensure Redis is installed and running.</li>
+    <li><strong>Swagger Docs Not Showing APIs:</strong> Verify that routes are registered with the proper tags.</li>
+</ul>
+
+<hr>
+
+<h2>Logs</h2>
+<p>Server logs provide useful insights and error details for easier debugging.</p>
+
+<hr>
+
+<h2>License</h2>
+<p>This project is licensed under the <strong>MIT License</strong>. See the <a href="LICENSE">LICENSE</a> file for more details.</p>
